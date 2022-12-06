@@ -62,7 +62,6 @@ export default function Home() {
           } else {
             stateColor = "rgb(120, 120, 120)";
           }
-          console.log(s.id, stateColor);
           const newStyle = { ...s.style, fill: stateColor };
           return <State key={s.id} {...allData} style={newStyle} />;
         })}
