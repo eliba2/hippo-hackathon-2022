@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import {GetStatesDataType} from "../../interfaces/api";
+import { GetStatesDataType } from "../../interfaces/api";
 const { PG_PASSWORD } = process.env;
 
 export default async function handler(
@@ -24,7 +24,9 @@ export default async function handler(
       'COUNT(id)  AS total_in_state\n' +
       'FROM policies WHERE status=\'active\'  AND "createdAt" > (CURRENT_DATE - INTERVAL \'30 DAY\')::DATE GROUP BY STATE' +
       ') t'
+  console.log("Querying the DB for states stats.")
   const queryRes = await pool.query(template)
+  console.log("Query completed.")
   const statesData: GetStatesDataType[] = queryRes.rows[0].json_agg
 
   const allCount = statesData.reduce((a, c) => a + c.total_in_state, 0)
