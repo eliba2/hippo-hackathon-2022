@@ -4,8 +4,7 @@ export type GetStatesType = {
   pct?: number;
 };
 
-export type GetStatesDataType = {
-  state: string;
+export type StateDataType = {
   ho3: number;
   ho6: number;
   dp3: number;
@@ -14,3 +13,4 @@ export type GetStatesDataType = {
   pct?: number;
 }
 
+export type StatesData = Record<string, StateDataType>;
