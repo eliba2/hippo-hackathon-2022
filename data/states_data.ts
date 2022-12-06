@@ -1,6 +1,5 @@
 // eslint-disable-next-line
 export default [
-    {state:"all",ho3:12843,ho6:2471,dp3:1936,ho5:397,total_in_state:17647},
     {state:"ky",ho3:316,ho6:101,dp3:106,ho5:0,total_in_state:523},
     {state:"pa",ho3:282,ho6:53,dp3:0,ho5:0,total_in_state:335},
     {state:"ne",ho3:150,ho6:103,dp3:54,ho5:0,total_in_state:307},
