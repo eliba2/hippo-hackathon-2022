@@ -41,9 +41,8 @@ export default function Home() {
     if (element.tagName === "path") {
       const stateId = element.dataset?.id?.toLowerCase();
       const stateData = data && stateId && data[stateId];
-      console.log('statedata = ', stateData);
       //console.log(data, stateId);
-      if (stateData)   {
+      if (stateData) {
         setCurrentState(stateData);
       }
       setPopupData((preState) => {
@@ -93,7 +92,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div id="mainpage">
       <Popup
         x={popupData.x}
         y={popupData.y}
@@ -110,7 +109,8 @@ export default function Home() {
           const { style, ...allData } = s;
           let stateColor;
           if (data && data[s.id.toLowerCase()]) {
-            const newGreen = (1 - (data[s.id.toLowerCase()].pct || 0 + 0.2) * 3) * 255;
+            const newGreen =
+              (1 - (data[s.id.toLowerCase()].pct || 0 + 0.2) * 3) * 255;
             stateColor = `rgb(0, ${newGreen}, 0)`;
           } else {
             stateColor = "rgb(230, 230, 230)";
@@ -127,6 +127,6 @@ export default function Home() {
         })}
       </Map>
       <Charts data={currentState} />
-    </>
+    </div>
   );
 }
