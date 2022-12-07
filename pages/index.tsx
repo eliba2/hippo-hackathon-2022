@@ -110,10 +110,10 @@ export default function Home() {
           const { style, ...allData } = s;
           let stateColor;
           if (data && data[s.id.toLowerCase()]) {
-            const newGreen = (data[s.id.toLowerCase()].pct || 0) * 50 * 255;
+            const newGreen = (1 - (data[s.id.toLowerCase()].pct || 0 + 0.2) * 3) * 255;
             stateColor = `rgb(0, ${newGreen}, 0)`;
           } else {
-            stateColor = "rgb(120, 120, 120)";
+            stateColor = "rgb(230, 230, 230)";
           }
           const newStyle = { ...s.style, fill: stateColor };
           return (
