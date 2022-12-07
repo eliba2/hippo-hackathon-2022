@@ -4,6 +4,8 @@ type MapProps = {
   children: React.ReactNode;
   mouseMove: (e: React.MouseEvent) => void;
   mouseOver: (e: React.MouseEvent) => void;
+  viewBox: string;
+  svgRef: React.RefObject<SVGSVGElement> | undefined;
 };
 
 const Map = (props: MapProps) => {
@@ -15,10 +17,11 @@ const Map = (props: MapProps) => {
       enableBackground={"new 0 0 1000 589"}
       height="589px"
       version="1.1"
-      viewBox="0 0 1000 589"
+      viewBox={props.viewBox}
       width="1000px"
       id="us-map"
       preserveAspectRatio="xMinYMin meet"
+      ref={props.svgRef}
     >
       <defs id="defs4"></defs>
       {props.children}

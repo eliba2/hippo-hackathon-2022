@@ -6,11 +6,13 @@ export type StateType = {
   dataId: string;
   d: string;
   style: React.CSSProperties;
+  onclick?: (e: React.MouseEvent) => void;
 };
 
 const State = (props: StateType) => {
   return (
     <path
+      onClick={props.onclick}
       key={props.id}
       id={props.id}
       data-name={props.dataName}
