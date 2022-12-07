@@ -5,6 +5,7 @@ export type GetStatesType = {
 };
 
 export type StateDataType = {
+  state?: string
   ho3: number;
   ho6: number;
   dp3: number;
