@@ -1,10 +1,11 @@
 import useSwr from "swr";
+import { animate, easeInOut } from "popmotion";
 
 import Map from "../components/map";
 import statesFile from "../data/states";
 import State, { StateType } from "../components/state";
-import { StatesData } from "../interfaces/api";
-import { useState } from "react";
+import { StatesData, ViewBoxType } from "../interfaces/api";
+import { useRef, useState } from "react";
 import Popup, { PopupType } from "../components/popup";
 
 const states: StateType[] = statesFile;
@@ -16,6 +17,13 @@ export default function Home() {
   const [popupData, setPopupData] = useState<PopupType>({
     show: false,
   });
+  const [mapViewBox, setMapViewBox] = useState<ViewBoxType>({
+    minX: 0,
+    minY: 0,
+    width: 1000,
+    height: 589,
+  });
+  const mapRef = useRef<SVGSVGElement>(null);
 
   const onMouseMove = (e: React.MouseEvent) => {
     setPopupData((prevState) => {
@@ -44,6 +52,37 @@ export default function Home() {
     }
   };
 
+  const onMouseClick = (e: React.MouseEvent) => {
+    /*
+    const screenWidth =
+      window.innerWidth ||
+      document.documentElement.clientWidth ||
+      document.body.clientWidth;
+    const screenHeight =
+      window.innerHeight ||
+      document.documentElement.clientHeight ||
+      document.body.clientHeight;
+
+    const box = (e.target as SVGGraphicsElement).getBBox();
+
+    const targetX = screenWidth / 2 - box.x + box.width / 2;
+
+    const newViewBox = { ...mapViewBox };
+    newViewBox.minX = -targetX;
+
+    animate({
+      elapsed: 0,
+      duration: 500,
+      ease: easeInOut,
+      to: [mapViewBox, newViewBox],
+      onUpdate: (val) => {
+        console.log("to => ", val);
+        setMapViewBox(val);
+      },
+    });
+    */
+  };
+
   return (
     <>
       <Popup
@@ -52,7 +91,12 @@ export default function Home() {
         text={popupData.text}
         show={popupData.show}
       />
-      <Map mouseMove={onMouseMove} mouseOver={onMouseOver}>
+      <Map
+        viewBox={`${mapViewBox.minX} ${mapViewBox.minY} ${mapViewBox.width} ${mapViewBox.height}`}
+        mouseMove={onMouseMove}
+        mouseOver={onMouseOver}
+        svgRef={mapRef}
+      >
         {states.map((s) => {
           const { style, ...allData } = s;
           let stateColor;
@@ -63,7 +107,14 @@ export default function Home() {
             stateColor = "rgb(120, 120, 120)";
           }
           const newStyle = { ...s.style, fill: stateColor };
-          return <State key={s.id} {...allData} style={newStyle} />;
+          return (
+            <State
+              onclick={onMouseClick}
+              key={s.id}
+              {...allData}
+              style={newStyle}
+            />
+          );
         })}
       </Map>
     </>

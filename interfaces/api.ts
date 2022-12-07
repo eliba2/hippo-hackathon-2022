@@ -11,6 +11,13 @@ export type StateDataType = {
   ho5: number;
   total_in_state: number;
   pct?: number;
-}
+};
 
 export type StatesData = Record<string, StateDataType>;
+
+export type ViewBoxType = {
+  minX: number;
+  minY: number;
+  width: number;
+  height: number;
+};
