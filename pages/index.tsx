@@ -4,9 +4,10 @@ import { animate, easeInOut } from "popmotion";
 import Map from "../components/map";
 import statesFile from "../data/states";
 import State, { StateType } from "../components/state";
-import { StatesData, ViewBoxType } from "../interfaces/api";
+import { StateDataType, StatesData, ViewBoxType } from "../interfaces/api";
 import { useRef, useState } from "react";
 import Popup, { PopupType } from "../components/popup";
+import Charts from "../components/charts";
 
 const states: StateType[] = statesFile;
 
@@ -24,6 +25,7 @@ export default function Home() {
     height: 589,
   });
   const mapRef = useRef<SVGSVGElement>(null);
+  const [currentState, setCurrentState] = useState<StateDataType | null>(null);
 
   const onMouseMove = (e: React.MouseEvent) => {
     setPopupData((prevState) => {
@@ -37,6 +39,13 @@ export default function Home() {
   const onMouseOver = (e: React.MouseEvent) => {
     var element = e.target as HTMLElement;
     if (element.tagName === "path") {
+      const stateId = element.dataset?.id?.toLowerCase();
+      const stateData = data && stateId && data[stateId];
+      console.log('statedata = ', stateData);
+      //console.log(data, stateId);
+      if (stateData)   {
+        setCurrentState(stateData);
+      }
       setPopupData((preState) => {
         const newState = { ...preState };
         newState.show = true;
@@ -117,6 +126,7 @@ export default function Home() {
           );
         })}
       </Map>
+      <Charts data={currentState} />
     </>
   );
 }

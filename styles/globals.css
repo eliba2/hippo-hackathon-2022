@@ -70,3 +70,9 @@ path:hover {
     z-index: 1;
 }
 
+#charts {
+  position: relative;
+  top: 1000px;
+  min-height: 200px;
+  height: 500px;
+}
