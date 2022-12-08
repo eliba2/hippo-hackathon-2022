@@ -71,7 +71,7 @@ path:hover {
   flex-direction: column;
 }
 
-#charts {
+.charts {
   display: block;
   height: 35vh;
   width: 25vw;
@@ -93,6 +93,8 @@ path:hover {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  color: #028115;
+  font-weight: 800;
 }
 
 #type-switch {
@@ -100,4 +102,6 @@ path:hover {
   flex-direction: row;
   position: relative;
   left : 100px;
+  color: #333;
+  display: none;
 }

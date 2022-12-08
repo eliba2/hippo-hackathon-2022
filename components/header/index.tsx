@@ -11,7 +11,7 @@ export type HeaderProps = {
 const Header = (props: HeaderProps) => {
   return (
     <section id="header">
-      <Typography variant="h2" component="h2">
+      <Typography variant="h2" component="h2" fontWeight={400}>
         Hippo Heat Map
       </Typography>
       <div id="type-switch">

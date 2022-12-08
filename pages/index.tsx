@@ -8,12 +8,13 @@ import {
   ClaimsData,
   MapDataType,
   StateDataType,
-  StatesData,
+  PoliciesData,
   ViewBoxType,
 } from "../interfaces/api";
 import { useRef, useState } from "react";
 import Popup, { PopupType } from "../components/popup";
-import Charts from "../components/charts";
+import PolicyChart from "../components/charts/policies";
+import ClaimChart from "../components/charts/claims";
 import Header from "../components/header";
 
 import "@fontsource/roboto/300.css";
@@ -26,7 +27,7 @@ const states: StateType[] = statesFile;
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
-  const { data: policiesData, error: policiesError } = useSwr<StatesData>(
+  const { data: policiesData, error: policiesError } = useSwr<PoliciesData>(
     `/api/states/`,
     fetcher
   );
@@ -34,9 +35,6 @@ export default function Home() {
     `/api/claims_database/`,
     fetcher
   );
-
-
-  console.log(JSON.stringify(claimsData, null, 2));
 
   const [popupData, setPopupData] = useState<PopupType>({
     show: false,
@@ -66,10 +64,14 @@ export default function Home() {
     var element = e.target as HTMLElement;
     if (element.tagName === "path") {
       const stateId = element.dataset?.id?.toLowerCase();
-      const stateData = policiesData && stateId && policiesData[stateId];
+      const policyData = policiesData && stateId && policiesData[stateId];
+      const claimData = claimsData && stateId && claimsData[stateId];
       //console.log(data, stateId);
-      if (stateData) {
-        setCurrentState(stateData);
+      if (policyData && claimData) {
+        setCurrentState({
+          policies: policyData,
+          claims: claimData,
+        });
       } else {
         setCurrentState(null);
       }
@@ -121,19 +123,19 @@ export default function Home() {
   };
 
   const buckets = {
-    0: 'rgb(205, 252, 191)',
-    1000: 'rgb(174, 246, 157)',
-    2000: 'rgb(150, 238, 133)',
-    3000: 'rgb(114, 224, 106)',
-    4000: 'rgb(78, 207, 80)',
-    5000: 'rgb(39, 187, 54)',
-    6000: 'rgb(7, 167, 33)',
-    7000: 'rgb(0, 145, 18)',
-    8000: 'rgb(0, 124, 15)',
-    9000: 'rgb(0, 103, 15)',
-    10000: 'rgb(0, 83, 13)',
-    20000: 'rgb(0, 64, 10)',
-    60000: 'rgb(0, 48, 7)'
+    0: "rgb(205, 252, 191)",
+    1000: "rgb(174, 246, 157)",
+    2000: "rgb(150, 238, 133)",
+    3000: "rgb(114, 224, 106)",
+    4000: "rgb(78, 207, 80)",
+    5000: "rgb(39, 187, 54)",
+    6000: "rgb(7, 167, 33)",
+    7000: "rgb(0, 145, 18)",
+    8000: "rgb(0, 124, 15)",
+    9000: "rgb(0, 103, 15)",
+    10000: "rgb(0, 83, 13)",
+    20000: "rgb(0, 64, 10)",
+    60000: "rgb(0, 48, 7)",
   };
 
   const assignColor = (numberOfPolicies: number) => {
@@ -180,7 +182,9 @@ export default function Home() {
             const { style, ...allData } = s;
             let stateColor;
             if (policiesData && policiesData[s.id.toLowerCase()]) {
-              stateColor = assignColor(policiesData[s.id.toLowerCase()].total_in_state);
+              stateColor = assignColor(
+                policiesData[s.id.toLowerCase()].total_in_state
+              );
             } else {
               stateColor = "rgb(230, 230, 230)";
             }
@@ -195,7 +199,10 @@ export default function Home() {
             );
           })}
         </Map>
-        <Charts data={currentState} />
+        <section id="charts">
+          <PolicyChart data={currentState && currentState.policies} />
+          <ClaimChart data={currentState && currentState.claims} />
+        </section>
       </section>
       <Popup
         x={popupData.x}

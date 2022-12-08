@@ -4,7 +4,7 @@ export type GetStatesType = {
   pct?: number;
 };
 
-export type StateDataType = {
+export type StatePoliciesDataType = {
   state?: string;
   ho3: number;
   ho6: number;
@@ -14,7 +14,43 @@ export type StateDataType = {
   pct?: number;
 };
 
-export type StatesData = Record<string, StateDataType>;
+export type StateClaimsDataType = {
+  state?: string;
+  aircraft?: number;
+  electrical_current?: number;
+  equipment_breakdown?: number;
+  explosions?: number;
+  falling_objects?: number;
+  fire?: number;
+  flood?: number;
+  hail?: number;
+  hurricane?: number;
+  liability?: number;
+  lightning?: number;
+  medical_payments?: number;
+  pipe_freezing?: number;
+  riots_or_civil_disturbances?: number;
+  roof_leak?: number;
+  service_line?: number;
+  smoke?: number;
+  theft?: number;
+  vandalism?: number;
+  vehicle?: number;
+  volcanic_eruption?: number;
+  water_appliance?: number;
+  water_backup?: number;
+  water_overflow?: number;
+  wind?: number;
+  total_in_state?: number;
+  pct?: number;
+};
+
+export type StateDataType = {
+  policies: StatePoliciesDataType;
+  claims: StateClaimsDataType;
+};
+
+export type PoliciesData = Record<string, StatePoliciesDataType>;
 
 export type ViewBoxType = {
   minX: number;
