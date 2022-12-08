@@ -22,3 +22,8 @@ export type ViewBoxType = {
   width: number;
   height: number;
 };
+
+export enum MapDataType {
+  PoliciesCount = 0,
+  Claims = 1,
+}
