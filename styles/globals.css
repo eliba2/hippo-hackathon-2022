@@ -20,8 +20,8 @@ a {
     color-scheme: dark;
   }
   body {
-    color: white;
-    background: black;
+    /*color: white;*/
+    background: white;
   }
 }
 
@@ -66,12 +66,38 @@ path:hover {
     z-index: 1;
 }
 
-#mainpage {
+#main-page {
   display: flex;
   flex-direction: column;
 }
 
 #charts {
   display: block;
-  height: 500px;
+  height: 35vh;
+  width: 25vw;
+}
+
+.map-container {
+  width: 75vw;
+  height: 100%;
+}
+
+#visual-data {
+  display: flex;
+  flex-direction: row;
+}
+
+#header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#type-switch {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  left : 100px;
 }

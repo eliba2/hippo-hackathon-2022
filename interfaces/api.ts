@@ -23,6 +23,11 @@ export type ViewBoxType = {
     height: number;
 };
 
+export enum MapDataType {
+  PoliciesCount = 0,
+  Claims = 1,
+}
+
 export type ClaimsDataType = {
     state: string,
     peril: PerilType,
@@ -59,4 +64,3 @@ export enum PerilType {
 
 
 export type ClaimsData = Record<string, Partial<Record<PerilType, number>>>;
-
