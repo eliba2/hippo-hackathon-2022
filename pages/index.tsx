@@ -44,6 +44,8 @@ export default function Home() {
       //console.log(data, stateId);
       if (stateData) {
         setCurrentState(stateData);
+      } else {
+        setCurrentState(null);
       }
       setPopupData((preState) => {
         const newState = { ...preState };
@@ -52,6 +54,7 @@ export default function Home() {
         return newState;
       });
     } else {
+      setCurrentState(null);
       setPopupData((prevState) => {
         const newState = { ...prevState };
         newState.show = false;
