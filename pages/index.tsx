@@ -120,6 +120,52 @@ export default function Home() {
     */
   };
 
+  const buckets = {
+    0: 'rgb(205, 252, 191)',
+    1000: 'rgb(174, 246, 157)',
+    2000: 'rgb(150, 238, 133)',
+    3000: 'rgb(114, 224, 106)',
+    4000: 'rgb(78, 207, 80)',
+    5000: 'rgb(39, 187, 54)',
+    6000: 'rgb(7, 167, 33)',
+    7000: 'rgb(0, 145, 18)',
+    8000: 'rgb(0, 124, 15)',
+    9000: 'rgb(0, 103, 15)',
+    10000: 'rgb(0, 83, 13)',
+    20000: 'rgb(0, 64, 10)',
+    60000: 'rgb(0, 48, 7)'
+  };
+
+  const assignColor = (numberOfPolicies: number) => {
+    if (numberOfPolicies < 1000) {
+      return buckets[0];
+    } else if (numberOfPolicies < 2000) {
+      return buckets[1000];
+    } else if (numberOfPolicies < 3000) {
+      return buckets[2000];
+    } else if (numberOfPolicies < 4000) {
+      return buckets[3000];
+    } else if (numberOfPolicies < 5000) {
+      return buckets[4000];
+    } else if (numberOfPolicies < 6000) {
+      return buckets[5000];
+    } else if (numberOfPolicies < 7000) {
+      return buckets[6000];
+    } else if (numberOfPolicies < 8000) {
+      return buckets[7000];
+    } else if (numberOfPolicies < 9000) {
+      return buckets[8000];
+    } else if (numberOfPolicies < 10000) {
+      return buckets[9000];
+    } else if (numberOfPolicies < 20000) {
+      return buckets[10000];
+    } else if (numberOfPolicies < 60000) {
+      return buckets[2000];
+    } else {
+      return buckets[60000];
+    }
+  };
+
   return (
     <div id="main-page">
       <Header dataType={mapDataType} setDataType={setMapDataType} />
@@ -134,10 +180,7 @@ export default function Home() {
             const { style, ...allData } = s;
             let stateColor;
             if (policiesData && policiesData[s.id.toLowerCase()]) {
-              const newGreen =
-                (1 - (policiesData[s.id.toLowerCase()].pct || 0 + 0.2) * 3) *
-                255;
-              stateColor = `rgb(0, ${newGreen}, 0)`;
+              stateColor = assignColor(policiesData[s.id.toLowerCase()].total_in_state);
             } else {
               stateColor = "rgb(230, 230, 230)";
             }
