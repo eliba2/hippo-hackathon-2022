@@ -64,5 +64,3 @@ export enum PerilType {
 
 
 export type ClaimsData = Record<string, Partial<Record<PerilType, number>>>;
-
->>>>>>> 0e0074fa9fd2bfe88cb9148dae3cad97e2d5d100
