@@ -1,15 +1,26 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type {NextApiRequest, NextApiResponse} from "next";
-import {StateDataType, StatesData, ClaimsDataType, ClaimsData} from "../../interfaces/api";
+import type { NextApiRequest, NextApiResponse } from "next";
+import {
+  StateDataType,
+  StatesData,
+  ClaimsDataType,
+  ClaimsData,
+  PerilStruct,
+  PerilType,
+} from "../../interfaces/api";
+import claimsDataFile from "../../data/claims_data_database";
 
-const {PG_PASSWORD} = process.env;
+const claimsData: ClaimsData = claimsDataFile;
 
-var fs = require('fs');
+//const { PG_PASSWORD } = process.env;
+
+//var fs = require("fs");
 
 export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse<ClaimsData>
+  req: NextApiRequest,
+  res: NextApiResponse<ClaimsData>
 ) {
+  /*
     const Pool = require("pg").Pool;
     const config = {
         host: "pod-staging.clv5lxmu2lpv.us-west-2.rds.amazonaws.com",
@@ -53,11 +64,26 @@ export default async function handler(
         }
     });
     res.status(200).json(temp)
-};
+*/
+
+  const allCount = Object.keys(claimsData).reduce((a, c) => {
+    const totalInState = Object.keys(claimsData[c]).reduce((a0, c0) => {
+      return a0 + Number(claimsData[c][c0 as PerilType]);
+    }, 0);
+    claimsData[c].total_in_state = totalInState;
+    return a + totalInState;
+  }, 0);
+
+  Object.keys(claimsData).forEach(
+    (s) => (claimsData[s].pct = (claimsData[s].total_in_state || 0) / allCount)
+  );
+
+  res.status(200).json(claimsData);
+}
 
 function stateData(stateData: StateDataType, allCount: number) {
-    const state: string = stateData.state || ""
-    stateData.pct = stateData.total_in_state / allCount
-    delete stateData.state
-    return {[state]: stateData}
+  const state: string = stateData.state || "";
+  stateData.pct = stateData.total_in_state / allCount;
+  delete stateData.state;
+  return { [state]: stateData };
 }

@@ -5,6 +5,7 @@ import Map from "../components/map";
 import statesFile from "../data/states";
 import State, { StateType } from "../components/state";
 import {
+  ClaimsData,
   MapDataType,
   StateDataType,
   StatesData,
@@ -15,18 +16,28 @@ import Popup, { PopupType } from "../components/popup";
 import Charts from "../components/charts";
 import Header from "../components/header";
 
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 const states: StateType[] = statesFile;
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-
 export default function Home() {
-  const { data, error } = useSwr<StatesData>(`/api/states/`, fetcher);
+  const { data: policiesData, error: policiesError } = useSwr<StatesData>(
+    `/api/states/`,
+    fetcher
+  );
+  const { data: claimsData, error: claimsError } = useSwr<ClaimsData>(
+    `/api/claims_database/`,
+    fetcher
+  );
+
+
+  console.log(JSON.stringify(claimsData, null, 2));
+
   const [popupData, setPopupData] = useState<PopupType>({
     show: false,
   });
@@ -55,7 +66,7 @@ export default function Home() {
     var element = e.target as HTMLElement;
     if (element.tagName === "path") {
       const stateId = element.dataset?.id?.toLowerCase();
-      const stateData = data && stateId && data[stateId];
+      const stateData = policiesData && stateId && policiesData[stateId];
       //console.log(data, stateId);
       if (stateData) {
         setCurrentState(stateData);
@@ -122,9 +133,10 @@ export default function Home() {
           {states.map((s) => {
             const { style, ...allData } = s;
             let stateColor;
-            if (data && data[s.id.toLowerCase()]) {
+            if (policiesData && policiesData[s.id.toLowerCase()]) {
               const newGreen =
-                (1 - (data[s.id.toLowerCase()].pct || 0 + 0.2) * 3) * 255;
+                (1 - (policiesData[s.id.toLowerCase()].pct || 0 + 0.2) * 3) *
+                255;
               stateColor = `rgb(0, ${newGreen}, 0)`;
             } else {
               stateColor = "rgb(230, 230, 230)";
