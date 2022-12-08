@@ -1,20 +1,20 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { StatesData } from "../../interfaces/api";
-import statesDataFile from "../../data/states_data";
+import { StateClaimsDataType, PoliciesData} from "../../interfaces/api";
+import policiesDataFile from "../../data/states_data";
 
-const statesData: StatesData = statesDataFile;
+const policiesData: PoliciesData = policiesDataFile;
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<StatesData>
+  res: NextApiResponse<PoliciesData>
 ) {
-  const allCount = Object.keys(statesData).reduce(
-    (a, c) => a + statesData[c].total_in_state,
+  const allCount = Object.keys(policiesData).reduce(
+    (a, c) => a + policiesData[c].total_in_state,
     0
   );
-  Object.keys(statesData).forEach(
-    (s) => (statesData[s].pct = statesData[s].total_in_state / allCount)
+  Object.keys(policiesData).forEach(
+    (s) => (policiesData[s].pct = policiesData[s].total_in_state / allCount)
   );
-  res.status(200).json(statesData);
+  res.status(200).json(policiesData);
 }

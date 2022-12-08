@@ -2,11 +2,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
   StateDataType,
-  StatesData,
-  ClaimsDataType,
   ClaimsData,
-  PerilStruct,
   PerilType,
+  StateClaimsDataType,
 } from "../../interfaces/api";
 import claimsDataFile from "../../data/claims_data_database";
 
@@ -81,9 +79,9 @@ export default async function handler(
   res.status(200).json(claimsData);
 }
 
-function stateData(stateData: StateDataType, allCount: number) {
+function stateData(stateData: StateClaimsDataType, allCount: number) {
   const state: string = stateData.state || "";
-  stateData.pct = stateData.total_in_state / allCount;
+  stateData.pct = (stateData.total_in_state || 0) / allCount;
   delete stateData.state;
   return { [state]: stateData };
 }

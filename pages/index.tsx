@@ -162,7 +162,7 @@ export default function Home() {
     } else if (numberOfPolicies < 20000) {
       return buckets[10000];
     } else if (numberOfPolicies < 60000) {
-      return buckets[2000];
+      return buckets[20000];
     } else {
       return buckets[60000];
     }

@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type {NextApiRequest, NextApiResponse} from "next";
-import {StateDataType, StatesData} from "../../interfaces/api";
+import {StateDataType, PoliciesData, StatePoliciesDataType} from "../../interfaces/api";
 
 const {PG_PASSWORD} = process.env;
 
@@ -8,7 +8,7 @@ var fs = require('fs');
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<StatesData>
+    res: NextApiResponse<PoliciesData>
 ) {
     const Pool = require("pg").Pool;
     const config = {
@@ -30,7 +30,7 @@ export default async function handler(
     const queryRes = await pool.query(template)
     const rawStatesData: StateDataType[] = queryRes.rows[0].json_agg
 
-    let obj: StatesData = {}
+    let obj: PoliciesData= {}
     const allCount = rawStatesData.reduce((a, c) => a + c.total_in_state, 0)
     rawStatesData.forEach((s, dx) => {
         obj = {...obj, ...stateData(rawStatesData[dx], allCount)}
@@ -45,7 +45,7 @@ export default async function handler(
     res.status(200).json(obj)
 };
 
-function stateData(stateData: StateDataType, allCount: number) {
+function stateData(stateData: StatePoliciesDataType, allCount: number) {
     const state: string = stateData.state || ""
     stateData.pct = stateData.total_in_state / allCount
     delete stateData.state
